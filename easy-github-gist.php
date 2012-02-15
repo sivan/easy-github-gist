@@ -4,13 +4,11 @@ Plugin Name: Easy GitHub Gist
 Plugin URI: http://wordpress.org/extend/plugins/easy-github-gist/
 Description: Easy GitHub Gist Plugin allows you to embed GitHub Gists from https://gist.github.com/.
 Usage: Just put the GitHub Gist url in the content.
-Version: 0.1 
+Version: 0.2 
 Author: Sivan 
 Author URI: http://lightcss.com/
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
-
-//catch the code
 function get_content_from_url($url) {
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_URL,$url);
@@ -20,12 +18,12 @@ function get_content_from_url($url) {
 	curl_close($ch);
 	return $content;
 }
-//catch raw code
+
 function gist_raw($id, $file) {
 	$request = "https://raw.github.com/gist/".$id."/".$file;
 	return get_content_from_url($request);
 }
-//noscript callback,是否把inline style移到style.css?
+
 function gist_raw_html($gist_raw) {
 	return "<div style='margin-bottom:1em;padding:0;'><noscript><code><pre style='overflow:auto;margin:0;padding:0;border:1px solid #DDD;'>".htmlentities($gist_raw)."</pre></code></noscript></div>";
 }
@@ -33,14 +31,8 @@ function gist_raw_html($gist_raw) {
 function gist_shortcode($atts) {
 	$id = $atts['id'];
 	$file = $atts['file'];
-	$html = sprintf(
-		'<script src="https://gist.github.com/%s.js%s"></script>', 
-		$id, 
-		$file ? '?file='.$file : ''
-	);
-
+	$html = sprintf('<script src="https://gist.github.com/%s.js%s"></script>', $id, $file ? '?file='.$file : '');
 	$gist_raw = gist_raw($id, $file);
-
 	if ($gist_raw != null) {
 		$html = $html.gist_raw_html($gist_raw);
 	}
