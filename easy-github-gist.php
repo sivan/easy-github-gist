@@ -10,8 +10,6 @@ Author URI: http://lightcss.com/
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
 
-define("REGEXP_GIST_URL","\"http:\/\/gist.github.com\/(.+)\.js\?file=(.+)\"");
-
 //catch the code
 function get_content_from_url($url) {
 	$ch = curl_init();
@@ -24,7 +22,7 @@ function get_content_from_url($url) {
 }
 //catch raw code
 function gist_raw($id, $file) {
-	$request = "http://gist.github.com/raw/".$id."/".$file;
+	$request = "https://raw.github.com/gist/".$id."/".$file;
 	return get_content_from_url($request);
 }
 //noscript callback,是否把inline style移到style.css?
@@ -33,14 +31,24 @@ function gist_raw_html($gist_raw) {
 }
 
 function gist_shortcode($atts) {
-	return sprintf(
+	$id = $atts['id'];
+	$file = $atts['file'];
+	$html = sprintf(
 		'<script src="https://gist.github.com/%s.js%s"></script>', 
-		$atts['id'], 
-		$atts['file'] ? '?file=' . $atts['file'] : ''
+		$id, 
+		$file ? '?file='.$file : ''
 	);
+
+	$gist_raw = gist_raw($id, $file);
+
+	if ($gist_raw != null) {
+		$html = $html.gist_raw_html($gist_raw);
+	}
+	return $html;
 }
 add_shortcode('gist','gist_shortcode');
 
+//autoreplace gist links to shortcodes
 function gist_shortcode_filter($content) {
 	return preg_replace('/https:\/\/gist.github.com\/([\d]+)[\.js\?]*[\#]*file[=|-|_]+([\w\.]+)(?![^<]*<\/a>)/i', '[gist id="${1}" file="${2}"]', $content );
 }
