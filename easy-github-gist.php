@@ -20,12 +20,12 @@ function get_content_from_url($url) {
 }
 
 function gist_raw($id, $file) {
-	$request = "https://raw.github.com/gist/".$id."/".$file;
+	$request = 'https://raw.github.com/gist/'.$id.'/'.$file;
 	return get_content_from_url($request);
 }
 
 function gist_raw_html($gist_raw) {
-	return "<div style='margin-bottom:1em;padding:0;'><noscript><code><pre style='overflow:auto;margin:0;padding:0;border:1px solid #DDD;'>".htmlentities($gist_raw)."</pre></code></noscript></div>";
+	return '<div style="margin-bottom:1em;padding:0;"><noscript><code><pre style="overflow:auto;margin:0;padding:0;border:1px solid #DDD;">'.htmlentities($gist_raw).'</pre></code></noscript></div>';
 }
 
 function gist_shortcode($atts) {
