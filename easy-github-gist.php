@@ -25,15 +25,15 @@ function gist_raw($id, $file) {
 }
 
 function gist_raw_html($gist_raw) {
-	return '<div style="margin-bottom:1em;padding:0;"><noscript><code><pre style="overflow:auto;margin:0;padding:0;border:1px solid #DDD;">'.htmlentities($gist_raw).'</pre></code></noscript></div>';
+	return "<div style=\"margin-bottom:1em;padding:0;\">\n\t<noscript>\t\t<code>\t\t\t<pre style=\"overflow:auto;margin:0;padding:0;border:1px solid #ddd;\">\n".htmlentities($gist_raw)."\n\t\t\t</pre>\n\t\t</code>\n\t</noscript>\n</div>";
 }
 
 function gist_shortcode($atts) {
 	$id = $atts['id'];
 	$file = $atts['file'];
-	$html = sprintf("<script src=\"https://gist.github.com/%s.js%s\"></script>\r\n", $id, $file ? '?file='.$file : '');
+	$html = sprintf("<script src=\"https://gist.github.com/%s.js%s\"></script>\n", $id, $file ? '?file='.$file : '');
 	$style = 'default';
-	$css = sprintf('<link rel="stylesheet" href="%s/styles/%s.css" />', plugins_url(), $style);
+	$css = sprintf("<link rel=\"stylesheet\" href=\"%s/styles/%s.css\" />\n", plugins_url(), $style);
 	$html = $html.$css;
 	$gist_raw = gist_raw($id, $file);
 	if ($gist_raw != null) {
