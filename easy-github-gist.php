@@ -31,7 +31,10 @@ function gist_raw_html($gist_raw) {
 function gist_shortcode($atts) {
 	$id = $atts['id'];
 	$file = $atts['file'];
-	$html = sprintf('<script src="https://gist.github.com/%s.js%s"></script>', $id, $file ? '?file='.$file : '');
+	$html = sprintf("<script src=\"https://gist.github.com/%s.js%s\"></script>\r\n", $id, $file ? '?file='.$file : '');
+	$style = 'default';
+	$css = sprintf('<link rel="stylesheet" href="%s/styles/%s.css" />', plugins_url(), $style);
+	$html = $html.$css;
 	$gist_raw = gist_raw($id, $file);
 	if ($gist_raw != null) {
 		$html = $html.gist_raw_html($gist_raw);
