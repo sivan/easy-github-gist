@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Easy GitHub Gist
-Plugin URI: http://wordpress.org/extend/plugins/easy-github-gist/
+Plugin URI: https://github.com/sivan/easy-github-gist
 Description: Easy GitHub Gist Plugin allows you to embed GitHub Gists from https://gist.github.com/.
 Usage: Just put the GitHub Gist url in the content.
 Version: 0.2 
@@ -48,5 +48,3 @@ function gist_shortcode_filter($content) {
 	return preg_replace('/https:\/\/gist.github.com\/([\d]+)[\.js\?]*[\#]*file[=|-|_]+([\w\.]+)(?![^<]*<\/a>)/i', '[gist id="${1}" file="${2}"]', $content );
 }
 add_filter( 'the_content', 'gist_shortcode_filter', 9);
-
-?>
